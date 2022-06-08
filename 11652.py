@@ -1,22 +1,25 @@
 import sys
+from collections import defaultdict
 
-INF = 100000
+INF = 2**62
 
 N = int(sys.stdin.readline())
-dic = {}
+dic = defaultdict(int)
+
+max_count = 1
 for _ in range(N):
     num = int(sys.stdin.readline())
-    max_count = 1
-    if num in dic:
-        dic[num] += 1
-        if dic[num] > max_count:
-            max_count = dic[num]
-    else:
-        dic[num] = 1
+    dic[num] += 1
+    if dic[num] > max_count:
+        max_count = dic[num]
+
+#print(dic)
 result = INF
+#print("max",max_count)
 for ele in dic:
-    if dic.get(ele) == max_count and result > dic.get(ele):
+    if dic.get(ele) == max_count and result > ele:
         result = ele
+
 
 print(result)
 
