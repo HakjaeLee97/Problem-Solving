@@ -12,6 +12,7 @@
 
 
 import sys
+sys.setrecursionlimit(10**5) #recursion error 방지
 
 N = int(sys.stdin.readline())
 
@@ -24,34 +25,59 @@ for _ in range(N):
 
 
 def quick_sort(arr,subject):
-    if subject == "kor":
-        index = 1
-        desc = 1 #내림차순
-
-    elif subject == "eng":
-        index = 2
-        desc = 0 # 오름차순
-    
-    elif subject =="math":
-        index = 3
-        desc = 1 #내림차순
-    elif subject == "name":
-        index = 0
-        desc = 0 #오름차순
-    
+    sub = subject 
     if len(arr) <= 1:
         return arr
 
-    pivot = arr[len(arr) // 2 ][index]
+    if subject == 0: #국어 점수 비교
+        index = 1
+        desc = 1 #내림차순
+
+    elif subject == 1: #영어 점수 비교
+        index = 2
+        desc = 0 # 오름차순
+    
+    elif subject ==2: #수학 점수 비교
+        index = 3
+        desc = 1 #내림차순
+    elif subject == 3: # 이름 비교
+        index = 0
+        desc = 0 #오름차순 
+    else:
+        index = -1
+        desc = -1
+
+    if subject == 3:
+        pivot = arr[0][index]
+    else:
+        #print(arr)
+        pivot = arr[len(arr) // 2 ][index]
+
     lesser_arr, equal_arr, greater_arr = [],[],[]
 
-    for num in arr:
-        if num[index] < pivot:
-            lesser_arr.append(num)
-        elif num[index] > pivot:
-            greater_arr.append(num)
-        else:
-            equal_arr.append(num)
-    return quick_sort(lesser_arr) + equal_arr + quick_sort(greater_arr)
 
-def quick
+
+
+    if desc == 0: # 오름차순
+        for num in arr:
+            if num[index] < pivot:
+                lesser_arr.append(num)
+            elif num[index] > pivot:
+                greater_arr.append(num)
+            else:
+                equal_arr.append(num)
+        return quick_sort(lesser_arr,sub) + quick_sort(equal_arr,(sub+1)) + quick_sort(greater_arr,sub)
+    else: #내림차순 정렬
+        for num in arr:
+            if num[index] > pivot:
+                lesser_arr.append(num)
+            elif num[index] < pivot:
+                greater_arr.append(num)
+            else:
+                equal_arr.append(num)
+        return quick_sort(lesser_arr,sub) + quick_sort(equal_arr,(sub+1)) + quick_sort(greater_arr,sub)        
+
+sorted_scores  = quick_sort(scores,0)
+
+for i in sorted_scores:
+    print(i[0])
