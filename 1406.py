@@ -15,3 +15,37 @@ P $	$라는 문자를 커서 왼쪽에 추가함
 초기에 편집기에 입력되어 있는 문자열이 주어지고, 그 이후 입력한 명령어가 차례로 주어졌을 때, 모든 명령어를 수행하고 난 후 편집기에 입력되어 있는 문자열을 구하는 프로그램을 작성하시오. 단, 명령어가 수행되기 전에 커서는 문장의 맨 뒤에 위치하고 있다고 한다.
 """
 
+from mimetypes import init
+from sys import stdin
+
+init_str = stdin.readline().strip()
+m = int(stdin.readline())
+cursor = len(init_str)
+
+
+
+def do_order(order,cursor,str, str_to_add=''):
+    result_str = str[:]
+    if order == "L" and cursor != 0:
+        cursor -= 1
+    elif order =="D" and cursor != len(str) + 1:
+        cursor += 1
+    elif order =="B" and cursor != 0:
+        result_str = result_str[1:]
+        cursor -=1
+    elif order =='P':
+        result_str = result_str[:cursor] + str_to_add + result_str[cursor:]
+        cursor += 1
+    return result_str , cursor
+
+
+
+for _ in range(m):
+    word = stdin.readline().split()
+
+    if word[0] == "P":
+        init_str, cursor = do_order(word[0],cursor,init_str,word[1])
+    else:
+        init_str,cursor = do_order(word[0],cursor,init_str)
+
+print(init_str)
