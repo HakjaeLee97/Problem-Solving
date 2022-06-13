@@ -7,92 +7,41 @@
 
 N과 K가 주어지면 (N, K)-요세푸스 순열을 구하는 프로그램을 작성하시오.
 """
+import sys
+ 
+# 세그먼트 트리 생성
+input = sys.stdin.readline
 
-from sys import stdin
-
-class Node:
-    def __init__(self, data):
-        self.data = data
-        self.next = None
-
-    def __str__(self):
-        return str(self.data)
-
-class CircleLinkedList:
-    def __init__(self, data):
-        new_node = Node(data)
-        self.head = new_node
-        self.tail = None
-        self.list_size = 1
-
-    def __str__(self):
-        print_list = '[ '
-        node = self.head
-        while True:
-            print_list += str(node)
-            if node == self.tail:
-            # 단순 연결 리스트와 달리
-            # 노드가 테일 노드면 끝난다
-                break
-            node = node.next
-            print_list += ', '
-        print_list += ' ]'
-        return print_list
-
-    def insertLast(self, data):
-        new_node = Node(data)
-        if self.tail == None:
-            self.tail = new_node
-            self.head.next = self.tail
-        else:
-            self.tail.next = new_node
-            self.tail = new_node
-        self.tail.next = self.head
-        self.list_size += 1
-
-    def selectNode(self, num):
-        if self.list_size < num:
-            print("Overflow")
-            return
-        node = self.head
-        count = 0
-        while count < num:
-            node = node.next
-            count += 1
-        return node
-
-    def deleteNode(self, num):
-        if self.list_size < 1:
-            return # Underflow
-        elif self.list_size < num:
-            return # Overflow
-
-        if num == 0:
-            self.deleteHead()
-            return
-        node = self.selectNode(num - 1)
-        node.next = node.next.next
-        del_node = node.next
-        del del_node
-
-    def deleteHead(self):
-        node = self.head
-        self.head = node.next
-        del node
+def init(node, start, end):
+  if start == end:
+    tree[node] = 1
+    return
+  
+  mid = (start+end)//2
+  init(2*node, start, mid)
+  init(2*node+1, mid+1, end)
+  tree[node] = tree[node*2]+tree[node*2+1]
 
 
-if __name__ == "__main__":
-
-    N,K = map(int,stdin.readline().split())
-    josephus = []
-    people = [i for i in range(1,N+1)]
-    idx = K
-    while people:
-        josephus.append(people[idx -1])
-        del(people[idx -1])
-        idx += K -1
-        if idx >= N:
-            idx -= N
+def query(node, start, end, order):
+  tree[node] -= 1
+  if start == end:
+    return start
+  mid = (start+end)//2
+  if tree[2*node] >= order:
+    return query(2*node, start, mid, order)
+  
+  return query(2*node+1, mid+1, end, order - tree[2*node])
 
 
-print(josephus)
+n, k = map(int, input().split())
+tree = [0]*300000
+order = k
+init(1,1,n)
+print("<", end = "")
+for _ in range(1, n):
+  print(query(1,1,n, order), end = ", ")
+  order += k-1
+  order = (order-1)%tree[1]+1
+
+print(query(1,1,n,order), end = ">")
