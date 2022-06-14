@@ -42,6 +42,6 @@ print("<", end = "")
 for _ in range(1, n):
   print(query(1,1,n, order), end = ", ")
   order += k-1
-  order = (order-1)%tree[1]+1
+  order = (order-1) % tree[1]+1
 
 print(query(1,1,n,order), end = ">")
