@@ -27,3 +27,4 @@ for test_case in range(1,T+1):
                 heapq.heappush(heap,[cost,nx,ny])
 
     print("#%d"%test_case,distance[N-1][N-1])
+
