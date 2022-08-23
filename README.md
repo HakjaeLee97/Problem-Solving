@@ -3,6 +3,8 @@
 
 
 비트 연산을 이용한 빠른 입력 받기
+
+
 	static int read() throws Exception {
 		int c, n = System.in.read() & 15;
 		while ((c = System.in.read()) > 32)
