@@ -1,5 +1,3 @@
-package s15172;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -35,7 +33,8 @@ public class Solution {
 			best = Integer.MAX_VALUE;
 			visited = new boolean[M];
 			seq = new int[M];
-			perm(0);
+			boolean[] check = new boolean[M+1];
+			perm(0,check);
 			sb.append("#").append(tc).append(" ").append(best).append("\n");
 		}
 		System.out.print(sb);
@@ -43,9 +42,8 @@ public class Solution {
 		
 		
 	}
-	public static void perm(int depth) {
+	public static void perm(int depth,boolean[] check) {
 		//같은 숫자에 대해 몬스터(양수)가 먼저 나와야 함
-		boolean[] check = new boolean[M+1]; //파라미터화로 가능할듯?
 		for(int i = 0; i<depth; i++) {
 			if(seq[i] < 0) {				
 				if(check[Math.abs(seq[i])] == false) {
@@ -69,8 +67,9 @@ public class Solution {
 			if(visited[i]) continue;
 			visited[i] = true;
 			seq[depth] = list.get(i)[2];
-			perm(depth+1);
+			perm(depth+1,check);
 			visited[i] = false;
+			check[Math.abs(seq[depth])] = false;
 		}
 	}
 	
@@ -78,6 +77,7 @@ public class Solution {
 		return(Math.abs(x1-x2) + Math.abs(y1-y2));
 	}
 	public static int find(int num) {
+		//hashmap을 사용하면 더 빠를까?
 		for(int i = 0; i<M; i++) {
 			int[] cur = list.get(i);
 			if(cur[2] == num ) return i;
