@@ -6,7 +6,6 @@ import java.util.StringTokenizer;
 public class Main {
 	
 	static boolean[] visited = new boolean[100_001];
-//	static int best = Integer.MAX_VALUE;
 	
 	static class Point implements Comparable<Point>{
 		int pos;
@@ -42,11 +41,9 @@ public class Main {
 		q.offer(new Point(N,0));
 		while(!q.isEmpty()) {
 			Point now = q.poll();
-			if(visited[now.pos]) continue;
 			visited[now.pos] = true;
 			
 			if(now.pos == K) {
-//				best = now.time;
 				return now.time;
 			}
 			
@@ -58,16 +55,14 @@ public class Main {
 			}
 			
 			next = now.pos + 1;
-			if(!(next < 0 || next > 100000  )) {
+			if(!(next < 0 || next > 100000 || visited[next] == true   )) {
 				q.offer(new Point(next,nexttime));
 			}
 			
 			next = now.pos - 1;
-			if(!( next < 0 || next > 100000  )) {
+			if(!( next < 0 || next > 100000 || visited[next] == true  )) {
 				q.offer(new Point(next,nexttime));
 			}
-		
-		
 		}
 
 		return 0;
