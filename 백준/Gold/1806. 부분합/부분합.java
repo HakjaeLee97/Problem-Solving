@@ -12,26 +12,15 @@ public class Main {
 		st = new StringTokenizer(br.readLine()," ");
 		int[] arr = new int[N+1];
 		
-		int sum = 0;
-		arr[0] = Integer.parseInt(st.nextToken());
-		
-		for(int i =1; i<N;i++) {
+		for(int i =0; i<N;i++) {
 			arr[i] = Integer.parseInt(st.nextToken());
-//			sum += arr[i];
-//			if(arr[i] == S) { //길이가 1인 부분합
-//				System.out.println(1); 
-//				System.exit(0);
-//			}
 		}
 		
-//		if(sum < S){ //부분합이 불가능
-//			System.out.println(0);
-//			System.exit(0);
-//		}
+
 		int left = 0;
 		int right = 0;
+		int sum = 0;
 		int answer = Integer.MAX_VALUE;
-		sum = 0;
 		while (left <=N && right <=N) {
 			if(sum >= S && answer > right-left) {
 				sum -= arr[left];
