@@ -1,5 +1,6 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayDeque;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
@@ -36,7 +37,7 @@ public class Main {
 	}
 	public static int bfs(int N,int K, int time) {
 		
-		PriorityQueue<Point> q = new PriorityQueue<>();
+		ArrayDeque<Point> q = new ArrayDeque<>();
 		
 		q.offer(new Point(N,0));
 		while(!q.isEmpty()) {
@@ -51,17 +52,18 @@ public class Main {
 			
 			int next = now.pos * 2; //순간이동
 			if(!(next < 0 || next > 100000 || visited[next] == true )) {
-				q.offer(new Point(next,now.time));
+				visited[next] = true;
+				q.offerFirst(new Point(next,now.time));
 			}
 			
 			next = now.pos + 1;
 			if(!(next < 0 || next > 100000 || visited[next] == true   )) {
-				q.offer(new Point(next,nexttime));
+				q.offerLast(new Point(next,nexttime));
 			}
 			
 			next = now.pos - 1;
 			if(!( next < 0 || next > 100000 || visited[next] == true  )) {
-				q.offer(new Point(next,nexttime));
+				q.offerLast(new Point(next,nexttime));
 			}
 		}
 
