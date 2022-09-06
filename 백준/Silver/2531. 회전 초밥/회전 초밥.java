@@ -1,5 +1,5 @@
-import java.io.*;
-import java.util.HashSet;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -11,24 +11,42 @@ public class Main {
 		int d = Integer.parseInt(st.nextToken());
 		int k = Integer.parseInt(st.nextToken());
 		int c = Integer.parseInt(st.nextToken());
-		
+		int answer=0, result = 0;
 		int[] belt = new int[N];
+		int[] visit = new int[d+1];
 		for(int i = 0; i<N; i++) {
 			belt[i] = Integer.parseInt(br.readLine());
 		}
 		
-		int best = 0;
-		HashSet<Integer> set = new HashSet<>(d);
-		
-		for(int i = 0; i<N; i++) {//각 벨트의 점에서 시작
-			set.clear();
-			for(int j= 0; j<k;j++) { //연속으로 k개를 먹음
-				set.add(belt[(i+j)%N]);
+		for(int i =0 ; i<k;i++) {
+			if(visit[belt[i]] == 0) {
+				result+= 1;
 			}
-			set.add(c);
-			best = Math.max(best, set.size());
+			visit[belt[i]] += 1;
 		}
-		System.out.println(best);
+		if(visit[c] == 0) answer = result + 1;
+		else answer = result;
+		
+		
+		for(int i = 0; i<N; i++) {
+			int start = i;
+			int end = (start + k) % N;
+			visit[belt[start]] -= 1;
+			if(visit[belt[start]] == 0) {
+				result -= 1;
+			}
+			if(visit[belt[end]] == 0) {
+				result += 1;
+			}
+			visit[belt[end]] += 1;
+			
+			if(visit[c] == 0) {
+				answer = Math.max(answer, result + 1);
+			}else {
+				answer = Math.max(answer, result);
+			}
+		}
+		System.out.println(answer);
 		br.close();
 	}
 
