@@ -26,10 +26,10 @@ public class Main {
 		int answer = 0;
 		
 		for(int i = H-1; i>=0; i--) {
-			boolean left = false,right = false;
+			boolean left = false;
 			int count = 0;
 			for(int j = 0; j<W;j++) {
-				if(left == false) {				
+				if(left == false) {
 					if(map[i][j] == 1) {
 						left = true;
 					}
