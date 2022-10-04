@@ -8,8 +8,9 @@ import java.util.StringTokenizer;
 public class Solution {
 	static int[] dx = {1,-1,0,0};
 	static int[] dy = {0,0,1,-1};
-	static int res,N,W,H,best;
+	static int res,best;
 	static boolean[] affected;
+	static Queue<Integer> q = new ArrayDeque<>();
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringBuilder sb = new StringBuilder();
@@ -18,9 +19,9 @@ public class Solution {
 		int T = Integer.parseInt(br.readLine());
 		for(int tc = 1; tc<=T; tc++) {
 			StringTokenizer st = new StringTokenizer(br.readLine()," ");
-			N  = Integer.parseInt(st.nextToken());
-			W  = Integer.parseInt(st.nextToken());
-			H  = Integer.parseInt(st.nextToken());
+			int N  = Integer.parseInt(st.nextToken());
+			int W  = Integer.parseInt(st.nextToken());
+			int H  = Integer.parseInt(st.nextToken());
 			int[][] map = new int[H][W];
 			res = 0;
 			best = Integer.MAX_VALUE;
@@ -33,14 +34,14 @@ public class Solution {
 				}
 			}
 			//W는 최대 12이므로, 완탐 + 백트래킹
-			dfs(0,map);
+			dfs(0,map,N,W,H);
 			sb.append("#").append(tc).append(" ").append(best).append("\n");
 			
 		}
 		System.out.print(sb);
 		br.close();
 	}
-	public static void dfs(int depth, int[][] map) {
+	public static void dfs(int depth, int[][] map,int N, int W, int H) {
 		if(depth == N) {
 			best = Math.min(best, res);
 			return;
@@ -55,9 +56,9 @@ public class Solution {
 					}
 					int res_save = res;
 					Arrays.fill(affected, false);
-					dest(i,j,temp); //벽돌 파괴 처리
-					clear(temp); // 벽돌 떨어짐 처리
-					dfs(depth+1,temp);
+					dest(i,j,temp,W,H); //벽돌 파괴 처리
+					clear(temp,W,H); // 벽돌 떨어짐 처리
+					dfs(depth+1,temp,N,W,H);
 					
 					res = res_save;
 	
@@ -69,7 +70,7 @@ public class Solution {
 		
 	}
 	//벽돌이 파괴되는 처리
-	public static void dest(int i, int j, int[][] map) {
+	public static void dest(int i, int j, int[][] map,int W, int H) {
 		int tmp = map[i][j];
 		
 		res--;
@@ -86,7 +87,7 @@ public class Solution {
 					affected[ny] = true;
 					map[nx][ny]= 0;
 				}else {
-					dest(nx,ny,map);
+					dest(nx,ny,map,W,H);
 				}
 					
 			}
@@ -94,14 +95,12 @@ public class Solution {
 		
 	}
 	//빈자리 벽돌이 떨어지는 처리
-	public static void clear(int[][] map) {
-		Queue<Integer> q = new ArrayDeque<>();
-		
+	public static void clear(int[][] map,int W, int H) {		
 		for(int j = 0; j<W; j++) {
 			if(affected[j] == false) continue;
 			for(int i= H-1; i>=0; i--) {
 				if(map[i][j] != 0) {
-					q.add(map[i][j]);
+					q.offer(map[i][j]);
 					map[i][j] = 0;
 				}
 			}
