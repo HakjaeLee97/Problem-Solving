@@ -19,12 +19,12 @@ public class Main {
 			int len = Integer.parseInt(st.nextToken());
 			if(len < end-start)	shortcuts.add(new int[] {start,end,len});
 		}
-		dfs(0,D,0,0,shortcuts);
+		dfs(D,0,0,shortcuts);
 		System.out.println(best);
 		br.close();
 	}
-	//순열?
-	public static void dfs(int depth, int D,int now, int length,ArrayList<int[]> shortcuts) {
+	//순열
+	public static void dfs(int D,int now, int length,ArrayList<int[]> shortcuts) {
 		if(now > D) {
 			return;
 		}
@@ -37,7 +37,7 @@ public class Main {
 			int[] cur = shortcuts.get(i);
 			//지금길을 탈 수 있을 때
 			if(now <= cur[0]) {
-				dfs(depth+1,D,cur[1],length + cur[0] - now + cur[2],shortcuts);
+				dfs(D,cur[1],length + cur[0] - now + cur[2],shortcuts);
 			}
 		}
 		//아무 길도 안 탈 때
