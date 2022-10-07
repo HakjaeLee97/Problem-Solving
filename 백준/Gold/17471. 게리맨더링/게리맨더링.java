@@ -74,13 +74,7 @@ public class Main{
 				}
 			}
 		}
-		//구역 1이 전부 인접했는지 검사
-		for(int i = 0; i<N; i++){
-			if(included[i] == true && visited[i] == false){
-				return;
-			}
-		}
-		//구역 2가 전부 인접했는지 검사
+		
 		for(int i =0 ; i<N;i++){
 			if(included[i] == false) {
 				q.offer(i);
@@ -97,8 +91,9 @@ public class Main{
 				}
 			}
 		}
+        //전부 인접했는지 검사
 		for(int i = 0; i<N; i++){
-			if(included[i] == false && visited[i] == false){
+			if(visited[i] == false){
 				return;
 			}
 		}
