@@ -1,6 +1,6 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.Arrays;
+import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -10,27 +10,19 @@ public class Main {
 		StringTokenizer st;
 		int N = Integer.parseInt(br.readLine());
 		//n번째 큰 수
-		int[] max = new int[N];
-		Arrays.fill(max, -1_000_000_001);
-		int size =  N * N;
-		int tmp;
+		PriorityQueue<Integer> pq = new PriorityQueue<>((o1,o2) -> {return o2-o1;}); 
 		for (int i = 0; i < N; i++) {
 			st = new StringTokenizer(br.readLine()," ");
 			for (int j = 0; j < N; j++) {
-				tmp = Integer.parseInt(st.nextToken());
-				for(int k = 0; k<N; k++) {
-					if(tmp > max[k]) {
-						for (int l = N-1; l > k; l--) {
-							max[l] = max[l-1];
-						}
-						max[k] = tmp;
-						break;
-					}
-				}
+				pq.offer(Integer.parseInt(st.nextToken()));
 			}
 		}
-		System.out.println(max[N-1]);
+		for (int i = 0; i < N-1; i++) {
+			pq.poll();
+		}
+		System.out.println(pq.poll());
 		br.close();
+
 	}
 
 }
