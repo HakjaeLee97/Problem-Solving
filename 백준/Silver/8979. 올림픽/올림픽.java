@@ -57,15 +57,14 @@ public class Main {
 				if(cnt != 0) {
 					rank += cnt;
 					cnt = 0;
-				}else {
 				}
 				rank++;
+				G = n.Gold;
+				S = n.Silver;
+				B = n.Bronze;
 			}else {
 				cnt++;
 			}
-			G = n.Gold;
-			S = n.Silver;
-			B = n.Bronze;
 			if(n.Index == K) break;
 		}
 		System.out.println(rank);
