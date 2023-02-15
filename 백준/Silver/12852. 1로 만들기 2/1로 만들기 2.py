@@ -1,27 +1,35 @@
 import sys
+from collections import deque
+
 N = int(sys.stdin.readline())
-dp = [0] * (N + 1)
-hist = [[]for i in range(N+1)]
+before = [-1 for i in range(N+1)]
 
-dp[1] = 0
-hist[1] = [1]
-
-
-for i in range(2,N+1):
-    dp[i] = dp[i-1] + 1
-    hist[i] = i - 1
-    if i % 3 == 0 and dp[i] > dp[i//3] + 1:
-        dp[i] = dp[i//3] +1
-        hist[i] = i//3
-    if i % 2 == 0 and dp[i] > dp[i//2] + 1:
-        dp[i] = dp[i//2] + 1
-        hist[i] = i//2
-
-
-print(dp[N])
-h = N
-while True:
-    print(h, end=' ')
-    if h == 1:
+visited = [-1 for i in range(N+1)]
+queue = deque([N])
+visited[N] = 0
+while queue:
+    start = queue.popleft()
+    if start == 1:
         break
-    h = hist[h]
+    if visited[start // 3] == -1 and start % 3 == 0:
+        queue.append(start // 3)
+        visited[start // 3] = visited[start] + 1
+        before[start // 3] = start
+    if visited[start // 2] == -1 and start % 2 == 0:
+        queue.append(start // 2)
+        visited[start // 2] = visited[start] + 1
+        before[start // 2] = start
+    if visited[start - 1] == -1:
+        queue.append(start - 1)
+        visited[start - 1] = visited[start] + 1
+        before[start - 1] = start
+
+ans = [1]
+key = 1
+while before[key] != -1:
+    ans.append(before[key])
+    key = before[key]
+    
+print(len(ans) - 1)
+for i in range(len(ans) - 1, -1, -1):
+    print(ans[i], end = ' ')
