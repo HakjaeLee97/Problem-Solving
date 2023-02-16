@@ -1,50 +1,31 @@
 import sys
+input=sys.stdin.readline
 
-def subset_sum(seq,depth, sum,result):
-    if depth == len(seq): 
-        result.append(sum)
+n,m=map(int,input().split())
+arr=list(map(int,input().split()))
+answer=0 if m!=0 else -1
+dic={}
+
+def lback(idx,end,ssum,s):
+    if idx==end:
+        if s.get(ssum)==None:
+            s[ssum]=1
+        else:
+            s[ssum]+=1
         return
-    sum += seq[depth]
-    subset_sum(seq,depth+1,sum, result)
-    sum -= seq[depth]
-    subset_sum(seq,depth+1,sum, result)
+    lback(idx+1,end,ssum,s)
+    lback(idx+1,end,ssum+arr[idx],s)
 
-N,S = map(int,sys.stdin.readline().split())
-seq = list(map(int, sys.stdin.readline().split()))
+def rback(idx,end,ssum,s):
+    if idx==end:
+        if s.get(m-ssum)!=None:
+            global answer
+            answer+=s[m-ssum]
+        return
+    rback(idx+1,end,ssum,s)
+    rback(idx+1,end,ssum+arr[idx],s)
+    
+lback(0,n//2,0,dic)
+rback(n//2,n,0,dic)
 
-left = seq[:N//2]
-right = seq[N//2:]
-
-lsum = []
-rsum = []
-subset_sum(left,0,0,lsum)
-subset_sum(right,0,0,rsum)
-
-lsum.sort()
-rsum.sort()
-
-pos1 = 0
-pos2 = len(rsum)-1
-count = 0
-
-while pos1<len(lsum) and pos2 >= 0:
-    if lsum[pos1] + rsum[pos2] < S:
-        pos1 +=1 
-    elif lsum[pos1] + rsum[pos2] == S:
-        tmp = lsum[pos1]
-        lcnt = 0
-        while pos1 < len(lsum) and lsum[pos1] == tmp:
-            lcnt += 1
-            pos1 += 1
-        tmp = rsum[pos2]
-        rcnt = 0
-        while pos2>= 0 and rsum[pos2] == tmp:
-            rcnt += 1
-            pos2 -= 1
-        count += lcnt * rcnt
-    else:
-        pos2 -= 1
-if S != 0:
-    print(count)
-else:
-    print(count-1)
+print(answer)     
